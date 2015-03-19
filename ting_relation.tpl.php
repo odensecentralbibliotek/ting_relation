@@ -14,7 +14,7 @@ foreach( $content as $ns => $relations ){
   if (!empty($relations)) { ?>
 <a name="<?php echo $ns;?>"></a>
 <div class="<?php print $classes.' ting-relation-'.drupal_html_class($ns).' clearfix'; ?>"> 
-  <h2><?php echo $relations[0]['type']?></h2>
+  <h2><?php echo isset($relations[0]['type']) ? $relations[0]['type'] : ""; ?></h2>
 
 <?php foreach( $relations as $key=>$relation ) { ?>
 
@@ -50,6 +50,15 @@ print '<div>'.$relation['text'].'</div>';
 if( isset($relation['online_url']) ) {
 print '<div class="field-type-ting-relation">';
 print '<div class="field-items rounded-corners">';
+//Convert infomedia urls to working urls. there is maby another place
+//that this could be done. but cant find it ?
+if(strpos(urldecode($relation['online_url']['#markup']),'[useraccessinfomedia]') !== false
+ && strpos(urldecode ($relation['online_url']['#markup']),'action=getArticle') !== false) 
+{
+    $splitresult = explode('faust=', urldecode($relation['online_url']['#markup']));
+    $splitresult = explode('&',  $splitresult[1]);
+    $relation['online_url'] = "<a target='_blank' href='/ting/infomedia/" . $splitresult[0] . "'>Læs</a>";
+}
 print render($relation['online_url']);
 print '</div></div>';
 }
