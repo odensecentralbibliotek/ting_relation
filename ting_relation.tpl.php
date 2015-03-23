@@ -52,10 +52,11 @@ print '<div class="field-type-ting-relation">';
 print '<div class="field-items rounded-corners">';
 //Convert infomedia urls to working urls. there is maby another place
 //that this could be done. but cant find it ?
-if(strpos(urldecode($relation['online_url']['#markup']),'[useraccessinfomedia]') !== false
- && strpos(urldecode ($relation['online_url']['#markup']),'action=getArticle') !== false) 
+$OnlineLink = isset($relation['online_url']) ? $relation['online_url'] : null;
+if(isset(urldecode($OnlineLink['#markup'])) && strpos(urldecode($OnlineLink['#markup']),'[useraccessinfomedia]') !== false
+ && strpos(urldecode ($OnlineLink['#markup']),'action=getArticle') !== false) 
 {
-    $splitresult = explode('faust=', urldecode($relation['online_url']['#markup']));
+    $splitresult = explode('faust=', urldecode($OnlineLink['#markup']));
     $splitresult = explode('&',  $splitresult[1]);
     $relation['online_url'] = "<a target='_blank' href='/ting/infomedia/" . $splitresult[0] . "'>Læs</a>";
 }
