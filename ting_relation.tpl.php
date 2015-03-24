@@ -53,13 +53,19 @@ print '<div class="field-items rounded-corners">';
 //Convert infomedia urls to working urls. there is maby another place
 //that this could be done. but cant find it ?
 $OnlineLink = isset($relation['online_url']) ? $relation['online_url'] : null;
-if(isset($OnlineLink) && strpos(urldecode($OnlineLink['#markup']),'[useraccessinfomedia]') !== false
- && strpos(urldecode ($OnlineLink['#markup']),'action=getArticle') !== false) 
+try
 {
-    $splitresult = explode('faust=', urldecode($OnlineLink['#markup']));
-    $splitresult = explode('&',  $splitresult[1]);
-    $relation['online_url'] = "<a target='_blank' href='/ting/infomedia/" . $splitresult[0] . "'>Læs</a>";
+    if(isset($OnlineLink) && strpos(urldecode($OnlineLink['#markup']),'[useraccessinfomedia]') !== false
+    && strpos(urldecode ($OnlineLink['#markup']),'action=getArticle') !== false) 
+   {
+       $splitresult = explode('faust=', urldecode($OnlineLink['#markup']));
+       $splitresult = explode('&',  $splitresult[1]);
+       $relation['online_url'] = "<a target='_blank' href='/ting/infomedia/" . $splitresult[0] . "'>Læs</a>";
+   }
+} catch (Exception $ex) {
+    $relation['online_url'] = "";
 }
+
 print render($relation['online_url']);
 print '</div></div>';
 }
