@@ -63,10 +63,10 @@ try
        $relation['online_url'] = "<a target='_blank' href='/ting/infomedia/" . $splitresult[0] . "'>Læs</a>";
    }
 } catch (Exception $ex) {
-    $relation['online_url'] = "";
+    $relation['online_url'] = null;
 }
 
-print render($relation['online_url']);
+print  isset($relation['online_url']) && $relation['online_url'] != null ? render($relation['online_url'] ) : '' ;
 print '</div></div>';
 }
 
