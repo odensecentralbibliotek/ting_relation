@@ -11,6 +11,17 @@ if( empty($content) ) {
 }
 
 foreach( $content as $ns => $relations ){
+    
+    for($i=0;$i <= sizeof($relations);$i++)
+    {
+        //Ebrary links are not working in relationship view. A custom ting action button is already added
+        //earlier in the hooks.
+        if(isset($relations[$i]['online_url']['#markup'])
+        && strpos(urldecode ($relations[$i]['online_url']['#markup']),'http://site.ebrary.com') !== false)
+        {
+            unset($relations[$i]);
+        }
+    }
   if (!empty($relations)) { ?>
 <a name="<?php echo $ns;?>"></a>
 <div class="<?php print $classes.' ting-relation-'.drupal_html_class($ns).' clearfix'; ?>"> 
