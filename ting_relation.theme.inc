@@ -193,8 +193,13 @@ function ting_relation_review( $relation ) {
 
 
 
-  if( $url = $rel->object->online_url ) {
+  if(isset($rel->object->online_url)) {
     $content['online_url'] = array('#markup' => l($rel->object->ac_source, $url, array('attributes' => array('target'=>'_blank'))));
+    }
+    elseif(isset($rel->uri) && in_array('docbook', $rel->object->reply->formatsAvailable))
+    {
+        $url = "ting/object/" . $rel->uri ."/fulltext";
+        $content['online_url'] = array('#markup' => l(t('Læs'), $url, array('attributes' => array('target'=>'_blank')))); 
     }
 
   return $content;
